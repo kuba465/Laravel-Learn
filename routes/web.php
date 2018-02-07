@@ -16,18 +16,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', ['as' => 'about', function () {
-    return "Strona about Jakub";
-}]);
+//Route::get('/about', ['as' => 'about', function () {
+//    return "Strona about Jakub";
+//}]);
+//
+//Route::get('/contact', function () {
+//    $url = route('about');
+//
+//    return "<html><head></head><body><a href=$url>About</a> </body></html>";
+//});
+//
+//Route::get('/posts/{author}/{id}', ['as' => 'selectedPostOfAuthor', function ($author, $id) {
+//    $str = "This is a super post nr: $id. " . ucfirst($author) . " wrote it!";
+//
+//    return "<html><head></head><body><p>$str</p></body></html>";
+//}]);
 
-Route::get('/contact', function () {
-    $url = route('about');
+//Route::get('/post/{id?}', 'PostsController@index')->name('post');
 
-    return "<html><head></head><body><a href=$url>About</a> </body></html>";
-});
-
-Route::get('/posts/{author}/{id}', ['as' => 'selectedPostOfAuthor', function ($author, $id) {
-    $str = "This is a super post nr: $id. " . ucfirst($author) . " wrote it!";
-
-    return "<html><head></head><body><p>$str</p></body></html>";
-}]);
+Route::resource('posts', 'PostsController');
