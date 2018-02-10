@@ -36,9 +36,9 @@ Route::get('/', function () {
 
 //Route::resource('posts', 'PostsController');
 
-//Route::get('/contact', 'PostsController@contact');
+Route::get('/contact', 'PostsController@contact');
 
-//Route::get('/post/{id}/{name}/{password}', 'PostsController@showPost');
+Route::get('/post/{id}/{name}/{password}', 'PostsController@showPost');
 
 Route::get('/contactNew/{number}', 'PostsController@contactNew');
 Route::get('/showPostNew/{number}', 'PostsController@showPostNew');
