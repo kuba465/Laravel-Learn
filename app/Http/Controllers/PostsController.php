@@ -82,4 +82,38 @@ class PostsController extends Controller
     {
         return "I need to call this method with parameter when I want to delete sth from db... $id";
     }
+
+    public function contact()
+    {
+        return view('contact');
+    }
+
+    public function showPost($id, $name, $password)
+    {
+//        return view('post')->with('id', $id);
+        $files = ['aaaaa', 'xxxxxx', 'ccccccc'];
+        return view('post', compact('id', 'name', 'password', 'files'));
+    }
+
+    public function contactNew($number)
+    {
+        $number++;
+        return view('contactNew', compact('number'));
+    }
+
+    public function showPostNew($number)
+    {
+        $number++;
+        return view('showPostNew', compact('number'));
+    }
+
+    public function contactNew2($number)
+    {
+        return view('contactNew', ['number' => $number++]);
+    }
+
+    public function showPostNew2($number)
+    {
+        return view('showPostNew', ['number' => $number++]);
+    }
 }
