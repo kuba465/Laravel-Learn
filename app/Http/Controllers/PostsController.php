@@ -103,10 +103,10 @@ class PostsController extends Controller
         return view('contactNew', compact('number'));
     }
 
-    public function showPostNew($number)
+    public function showPostNew($title, $content)
     {
-        $number++;
-        return view('showPostNew', compact('number'));
+//        $number++;
+        return view('showPostNew', compact('title', 'content'));
     }
 
     public function contactNew2($number)
@@ -117,5 +117,13 @@ class PostsController extends Controller
     public function showPostNew2($number)
     {
         return view('showPostNew', ['number' => $number++]);
+    }
+
+    public function updateFromForm(Request $request)
+    {
+        \DB::insert('insert into posts(title, content) values(:title, :content)', [
+            'title' => $request->title,
+            'content' => $request->text
+        ]);
     }
 }

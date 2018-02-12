@@ -12,9 +12,9 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 //Route::get('/about', ['as' => 'about', function () {
 //    return "Strona about Jakub";
@@ -36,9 +36,47 @@ Route::get('/', function () {
 
 //Route::resource('posts', 'PostsController');
 
-Route::get('/contact', 'PostsController@contact');
+//Route::get('/contact', 'PostsController@contact');
+//
+//Route::get('/post/{id}/{name}/{password}', 'PostsController@showPost');
+//
+//Route::get('/contactNew/{number}', 'PostsController@contactNew');
+Route::get('/showPostNew/{title}/{content}', 'PostsController@showPostNew');
 
-Route::get('/post/{id}/{name}/{password}', 'PostsController@showPost');
 
-Route::get('/contactNew/{number}', 'PostsController@contactNew');
-Route::get('/showPostNew/{number}', 'PostsController@showPostNew');
+Route::get('/insert/{title}/{content}', function ($title, $content){
+    DB::insert('insert into posts(title, content) values(?, ?)', [$title, $content]);
+});
+
+Route::get('/read', function () {
+    $result = DB::select('select * from posts where id = :id', ['id' => 4]);
+//    $result = DB::select('select * from posts');
+    foreach ($result as $post) {
+        echo "<h1 style='display: inline'>Title:</h1> " . $post->title . "<br>";
+        echo "<h3 style='display: inline; margin-bottom: 5px'>Content:</h3> " . $post->content;
+    }
+
+    //return $result;
+});
+
+Route::get('/update', function () {
+    $updated = DB::update('update posts set title = "Super Zmieniony post" where id = :id', ['id' => 4]);
+
+    return $updated;
+});
+
+
+//update datas from form
+
+Route::get('/updateForm', function (){
+    return view('updateForm');
+});
+
+Route::post('/updateFromForm', 'PostsController@updateFromForm');
+
+
+Route::get('delete', function (){
+    $deleted = DB::delete('delete from posts where id = ?', [1]);
+
+    return $deleted;
+});

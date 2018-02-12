@@ -13,8 +13,19 @@
 </head>
 <body>
 <div class="flex-center position-ref full-height">
-    {{--<h1> Liczba to: {{$number}}</h1>--}}
-    <a href="{{url('insert', ['title'=>$title, 'content'=>$content])}}">Contact New</a>
+    <form class="form-control" action="{{url('/updateFromForm')}}" method="post">
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+            Wpisz tytuł:
+        <input class="form-group" name="title" type="text">
+
+        <br>
+            Podaj treść:
+        <input type="text" class="form-group" name="text">
+
+        <br>
+
+        <button type="submit">Zmień</button>
+    </form>
 </div>
 </body>
 </html>
