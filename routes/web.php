@@ -1,16 +1,12 @@
 <?php
 
 use App\Post;
-
+use App\User;
+use App\Role;
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Basic Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 
@@ -45,6 +41,12 @@ use App\Post;
 //Route::get('/contactNew/{number}', 'PostsController@contactNew');
 //Route::get('/showPostNew/{title}/{content}', 'PostsController@showPostNew');
 
+
+/*
+|--------------------------------------------------------------------------
+| Database - Raw SQL
+|--------------------------------------------------------------------------
+*/
 
 //insert datas with binding to db
 //Route::get('/insert/{title}/{content}', function ($title, $content) {
@@ -91,6 +93,12 @@ use App\Post;
 //    return $deleted;
 //});
 
+
+/*
+|--------------------------------------------------------------------------
+| Database - ORM Eloquent
+|--------------------------------------------------------------------------
+*/
 
 //search for all posts
 //Route::get('/read', function () {
@@ -193,6 +201,12 @@ use App\Post;
 //});
 
 
+/*
+|--------------------------------------------------------------------------
+| Database - ORM Eloquent - Soft Delete
+|--------------------------------------------------------------------------
+*/
+
 //delete record by add timestamp to column deleted_at
 //before I used it I had to make migration to add this to db
 //Route::get('softDelete', function () {
@@ -228,9 +242,56 @@ use App\Post;
 
 
 //how to delete datas permanently
-Route::get('forceDelete', function () {
-//    Post::withTrashed()->where('id', 2)->forceDelete();
+//Route::get('forceDelete', function () {
+////    Post::withTrashed()->where('id', 2)->forceDelete();
+//
+//    //better to use in this case is this code because I want to delete only trashed rows
+//    Post::onlyTrashed()->where('id', 2)->forceDelete();
+//});
 
-    //better to use in this case is this code because I want to delete only trashed rows
-    Post::onlyTrashed()->where('id', 2)->forceDelete();
+
+/*
+|--------------------------------------------------------------------------
+| Database - ORM Eloquent - Relationships
+|--------------------------------------------------------------------------
+*/
+
+//One to One relationship
+//Route::get('user/{id}/post', function ($id) {
+//    $user = User::find($id);
+//    return $user->post;
+//
+//    //second way
+//    //return User::find($id)->post;
+//});
+
+//inversed = belongsTo in Post model
+//Route::get('post/{id}/user', function ($id) {
+//    return Post::find($id)->user;
+//
+//    //second way
+//    $post = Post::find($id);
+//    return $post->user;
+//});
+
+
+//One To Many
+//Route::get('posts', function () {
+//    $user = User::find(1);
+//
+//    foreach ($user->posts as $post) {
+//        echo $post->title . "<br>";
+//    }
+//});
+//inversed is of course the same as in One to one relatioship
+//because post has only one user, so there again should be belongsTo
+
+
+//Many To Many
+Route::get('user/{id}/role', function ($id){
+    return User::find($id)->roles;
+});
+
+Route::get('role/{id}/user', function ($id){
+    return Role::find($id)->users()->orderBy('id', 'desc')->get();
 });
