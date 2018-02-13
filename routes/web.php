@@ -1,8 +1,12 @@
 <?php
 
+use App\Country;
+use App\Photo;
 use App\Post;
+use App\Tag;
 use App\User;
 use App\Role;
+
 /*
 |--------------------------------------------------------------------------
 | Basic Routes
@@ -288,10 +292,75 @@ use App\Role;
 
 
 //Many To Many
-Route::get('user/{id}/role', function ($id){
-    return User::find($id)->roles;
+//Route::get('user/{id}/role', function ($id){
+//    return User::find($id)->roles;
+//});
+//
+//Route::get('role/{id}/user', function ($id){
+//    return Role::find($id)->users()->orderBy('id', 'desc')->get();
+//});
+
+
+//Accessing to intermediate/pivot table
+//Route::get('user/pivot', function () {
+//    $user = User::find(1);
+//    foreach ($user->roles as $role) {
+//        //I had to add a "withPivot" method in User model, because without it return was only user_id and role_id
+//        echo $role->pivot;
+//    }
+//});
+
+
+//Get country of post by going through user table
+//the point is that country table has not foreign key to post table
+//you must go through user table and get this by using "hasManyThrough" method
+//Route::get('user/country', function () {
+//    $country = Country::find(1);
+//    foreach ($country->posts as $post) {
+//        return $post->title;
+//    }
+//});
+
+
+//Polymorphic relation
+Route::get('user/photos', function (){
+    $user = User::find(1);
+
+    foreach ($user->photos as $photo) {
+        return $photo;
+    }
 });
 
-Route::get('role/{id}/user', function ($id){
-    return Role::find($id)->users()->orderBy('id', 'desc')->get();
+Route::get('post/photos', function (){
+    $post = Post::find(1);
+
+    foreach ($post->photos as $photo) {
+        return $photo;
+    }
+});
+
+
+//Inverse polymorphic relation
+Route::get('photo/{id}', function ($id){
+    $photo = Photo::findOrFail($id);
+
+    echo $photo->imageable;
+});
+
+
+//Polymorphic Many to Many
+Route::get('post/{id}/tag', function ($id){
+   $post = Post::find($id);
+
+    foreach ($post->tags as $tag) {
+        echo $tag;
+   }
+});
+
+Route::get('tag/{id}', function ($id){
+   $tag = Tag::find($id);
+
+    foreach ($tag->posts as $post) {
+        echo $post;
+   }
 });
