@@ -28,23 +28,28 @@ class User extends Authenticatable
     ];
 
 
-    public function post()
-    {
-        return $this->hasOne('App\Post');
-    }
+//    public function post()
+//    {
+//        return $this->hasOne('App\Post');
+//    }
+//
+//    public function posts()
+//    {
+//        return $this->hasMany('App\Post');
+//    }
+//
+//    public function roles()
+//    {
+//        return $this->belongsToMany('App\Role')->withPivot('created_at');
+//    }
+//
+//    public function photos()
+//    {
+//        return $this->morphMany('App\Photo', 'imageable');
+//    }
 
-    public function posts()
+    public function address()
     {
-        return $this->hasMany('App\Post');
-    }
-
-    public function roles()
-    {
-        return $this->belongsToMany('App\Role')->withPivot('created_at');
-    }
-
-    public function photos()
-    {
-        return $this->morphMany('App\Photo', 'imageable');
+        return $this->hasOne('App\Address');
     }
 }

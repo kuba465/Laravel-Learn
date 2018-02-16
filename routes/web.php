@@ -1,5 +1,6 @@
 <?php
 
+use App\Address;
 use App\Country;
 use App\Photo;
 use App\Post;
@@ -323,44 +324,78 @@ use App\Role;
 
 
 //Polymorphic relation
-Route::get('user/photos', function (){
-    $user = User::find(1);
+//Route::get('user/photos', function (){
+//    $user = User::find(1);
+//
+//    foreach ($user->photos as $photo) {
+//        return $photo;
+//    }
+//});
+//
+//Route::get('post/photos', function (){
+//    $post = Post::find(1);
+//
+//    foreach ($post->photos as $photo) {
+//        return $photo;
+//    }
+//});
+//
+//
+////Inverse polymorphic relation
+//Route::get('photo/{id}', function ($id){
+//    $photo = Photo::findOrFail($id);
+//
+//    echo $photo->imageable;
+//});
+//
+//
+////Polymorphic Many to Many
+//Route::get('post/{id}/tag', function ($id){
+//   $post = Post::find($id);
+//
+//    foreach ($post->tags as $tag) {
+//        echo $tag;
+//   }
+//});
+//
+//Route::get('tag/{id}', function ($id){
+//   $tag = Tag::find($id);
+//
+//    foreach ($tag->posts as $post) {
+//        echo $post;
+//   }
+//});
 
-    foreach ($user->photos as $photo) {
-        return $photo;
-    }
+
+//Relations with CRUD
+Route::get('insert', function () {
+    $user = User::findOrFail(1);
+
+    $address = new Address(['name'=>'1234 Houston Avenue NY NY 11218']);
+
+    $user->address()->save($address);
 });
 
-Route::get('post/photos', function (){
-    $post = Post::find(1);
 
-    foreach ($post->photos as $photo) {
-        return $photo;
-    }
+Route::get('update',function (){
+//    $address = Address::where('user_id',1);
+    $address = Address::whereUserId(1)->first();
+
+    $address->name = 'super address';
+
+    $address->save();
 });
 
 
-//Inverse polymorphic relation
-Route::get('photo/{id}', function ($id){
-    $photo = Photo::findOrFail($id);
+Route::get('read', function (){
+    $user = User::findOrFail(1);
 
-    echo $photo->imageable;
+    echo $user->address->name;
 });
 
 
-//Polymorphic Many to Many
-Route::get('post/{id}/tag', function ($id){
-   $post = Post::find($id);
+Route::get('delete',function (){
+    $user = User::findOrFail(1);
 
-    foreach ($post->tags as $tag) {
-        echo $tag;
-   }
-});
-
-Route::get('tag/{id}', function ($id){
-   $tag = Tag::find($id);
-
-    foreach ($tag->posts as $post) {
-        echo $post;
-   }
+    $user->address()->delete();
 });
